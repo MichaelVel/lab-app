@@ -7,7 +7,7 @@ import Header from '../header/Header';
 export default function Root(): ReactElement {
     return (
     <div>
-        <Header rol={"Instructor"}/>
+        <Header/>
         <main>
             <Outlet/> 
         </main>

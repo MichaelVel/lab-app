@@ -1,5 +1,6 @@
 import {Grid} from '@mui/material';
-import {ReactElement} from 'react';
+import {ReactElement, useContext} from 'react';
+import {UserContext} from '../context/user';
 import './Header.css';
 
 import NavBar from './navbar';
@@ -8,14 +9,9 @@ import {
     UserLoginSection,
 } from './user';
 
-type Rol = "Instructor" | "Student" | "Anonymous" ;
+export default function Header(): ReactElement {
+    const user = useContext(UserContext);
 
-interface Props {
-   rol?: Rol;
-}
-
-// The Main component of the header, contains the state of the header
-export default function Header(props: Props): ReactElement {
     return (
         <header>
             <Grid container alignItems={'center'} spacing={3}>
@@ -23,11 +19,11 @@ export default function Header(props: Props): ReactElement {
                     <h1>LabChallenge</h1>
                 </Grid>
                 <Grid item xs={4}> 
-                    <NavBar rol={props.rol}/>
+                    <NavBar />
                 </Grid>
                 <Grid item xs={5}>
                     {
-                        props.rol === 'Anonymous' 
+                        user.rol === 'Anonymous' 
                             ? <UserLoginSection />
                             : <AccountMenu />
                     }

@@ -1,31 +1,27 @@
-import {ReactElement} from 'react';
+import {ReactElement, useContext} from 'react';
+import {UserContext} from '../context/user';
 
 import Button from '@mui/material/Button';
 import {
     Stack,
 } from '@mui/material';
 
-type Rol = "Instructor" | "Student" | "Anonymous" ;
-
-interface Props {
-   rol?: Rol;
-}
-export default function NavBar(props: Props): ReactElement {
-    let pages = [ ["Retos", "/challenges"]];
-    let pagesExt: Array<[string, string]> = [];
+export default function NavBar(): ReactElement {
+    let user = useContext(UserContext);
+    let pages: Array<[string, string]> = [];
     
-    if (props.rol === 'Instructor') {
-        pagesExt = [
-            ['Mis Retos',"users/1/challenges/1"],
-            ['Crear Reto', "users/1/create-challenge/"],
+    if (user.rol === 'Instructor') {
+        pages = [
+            ['Mis Retos', `/users/${user.name}/challenges`],
+            ['Crear Reto', `/users/${user.name}/create-challenge`],
         ];
-    } else if (props.rol === 'Student') {
-        pagesExt = [
-            ['Mis Soluciones',"users/1/solutions/1"]
+    } else if (user.rol === 'Student') {
+        pages = [
+            ['Mis Soluciones', `/users/${user.name}/solutions`]
         ];
     }
 
-    pages = pages.concat(pagesExt);
+    pages.unshift(["Retos", "/challenges"]);
     
     return (
             <Stack spacing={1} direction="row">

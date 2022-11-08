@@ -4,17 +4,17 @@ import ReactDOM from 'react-dom/client';
 import {
     createBrowserRouter,
     RouterProvider,
-    Route,
 } from 'react-router-dom';
 
 import './index.css';
-import reportWebVitals from './reportWebVitals';
+//import reportWebVitals from './reportWebVitals';
 
 import Root from './routes/root';
 import SignIn from './routes/login';
 import SignUp from './routes/register';
 import {action as LogOutAction} from './routes/logout';
 import SearchChallenge from './routes/search';
+import {User, UserContext} from './context/user';
 
 
 const router = createBrowserRouter([
@@ -42,13 +42,32 @@ const router = createBrowserRouter([
     },
 ]);
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+// Testing purposes
+const aUser: User = {
+    name: 'anonymous',
+    rol: 'Anonymous',
+}
+
+const user1: User = {
+    name: 'Student',
+    rol: 'Student',
+}
+
+const user2: User = {
+    name: 'Instructor',
+    rol: 'Instructor',
+}
+
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserContext.Provider value={user2}>
+        <RouterProvider router={router} />
+    </UserContext.Provider>
   </React.StrictMode>
 );
 

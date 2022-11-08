@@ -16,7 +16,11 @@ import {
     Logout,
 } from '@mui/icons-material';
 
+import {UserContext} from '../context/user';
+
 export function AccountMenu() {
+  const user = React.useContext(UserContext);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -44,7 +48,9 @@ export function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>
+                { user.rol === "Student" ? 'E' : 'I' }
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -85,7 +91,7 @@ export function AccountMenu() {
       >
         <MenuItem>
           <Avatar />
-          Mi Cuenta
+          {user.name}
         </MenuItem>
         <Divider />
         <MenuItem>

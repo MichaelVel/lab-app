@@ -2,7 +2,6 @@ import {ReactElement} from 'react';
 
 import Button from '@mui/material/Button';
 import {
-    ButtonGroup,
     Stack,
 } from '@mui/material';
 
@@ -16,9 +15,14 @@ export default function NavBar(props: Props): ReactElement {
     let pagesExt: Array<[string, string]> = [];
     
     if (props.rol === 'Instructor') {
-        pagesExt = [['Mis Retos',"users/1/challenges/1"]]
+        pagesExt = [
+            ['Mis Retos',"users/1/challenges/1"],
+            ['Crear Reto', "users/1/create-challenge/"],
+        ];
     } else if (props.rol === 'Student') {
-        pagesExt = [['Mis Soluciones',"users/1/solutions/1"]]
+        pagesExt = [
+            ['Mis Soluciones',"users/1/solutions/1"]
+        ];
     }
 
     pages = pages.concat(pagesExt);

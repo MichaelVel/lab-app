@@ -14,6 +14,7 @@ import Root from './routes/root';
 import SignIn from './routes/login';
 import SignUp from './routes/register';
 import {action as LogOutAction} from './routes/logout';
+import SearchChallenge from './routes/search';
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
                 path: '/users/logout',
                 loader: LogOutAction,
             },
+            {
+                path: '/challenges',
+                element: <SearchChallenge />,
+            }
         ]
     },
 ]);

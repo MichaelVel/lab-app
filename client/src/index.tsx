@@ -15,6 +15,7 @@ import SignUp from './routes/register';
 import {action as LogOutAction} from './routes/logout';
 import SearchChallenge from './routes/search';
 import {User, UserContext} from './context/user';
+import CreateChallenge from './routes/create-challenge';
 
 
 const router = createBrowserRouter([
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
             {
                 path: '/challenges',
                 element: <SearchChallenge />,
-            }
+            },
+            {
+                path: '/users/:id/create-challenge',
+                element: <CreateChallenge />,
+            },
         ]
     },
 ]);

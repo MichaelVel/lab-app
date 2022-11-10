@@ -17,6 +17,8 @@ import SearchChallenge from './routes/search';
 import {User, UserContext} from './context/user';
 import CreateChallenge from './routes/create-challenge';
 
+import ListInput from './main/inputs/input-list';
+import {Input, TextField} from '@mui/material';
 
 const router = createBrowserRouter([
     {
@@ -42,6 +44,15 @@ const router = createBrowserRouter([
             {
                 path: '/users/:id/create-challenge',
                 element: <CreateChallenge />,
+            },
+            {
+                path: '/test',
+                element: <form>
+                    <TextField disabled name="AAA" value="BBB" />
+                    <Input name="aaa" value="bbb"/>
+                    <button>submit</button>
+                </form> 
+                ,
             },
         ]
     },

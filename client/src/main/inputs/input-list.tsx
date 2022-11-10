@@ -11,11 +11,9 @@ import {
     TextField,
 } from '@mui/material';
 
-export default function ListInput(props: {listName?: string}) {
+export default function ListInput(props: {listName?: string, inputName: string}) {
   const [textInput, setTextInput] = React.useState<string>();
-  const [listData, setListData] = React.useState<string[]>([
-    "new", "none", "send",
-  ]);
+  const [listData, setListData] = React.useState<string[]>([]);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -23,7 +21,6 @@ export default function ListInput(props: {listName?: string}) {
     setListData((data: string[]) => data.filter(
         ({}, index: number) => index !== selectedIndex)
     );
-    console.log(listData);
   };
 
   const handleChange = (evt: any ) => {
@@ -89,10 +86,10 @@ export default function ListInput(props: {listName?: string}) {
                     >
                         <ListItemText primary={
                             <TextField 
-                                disabled 
                                 fullWidth 
                                 multiline 
                                 size="small"
+                                name={props.inputName}
                                 value={data}
                                 variant="filled"
                             />}

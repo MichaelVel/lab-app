@@ -5,7 +5,7 @@ import SectionHelp from './section-help';
 import SectionTitle from './section-title';
 
 interface SectionProps {
-    name: string;
+    name?: string;
     description?: string;
     elements: JSX.Element;
 };
@@ -17,7 +17,7 @@ export default function Section({name,description,elements}: SectionProps) {
            <Grid item xs={12}>
                 <Stack direction="row">
                 <Box px={{paddingLeft: '1em', paddingTop: '0.8em'}}>
-                    <SectionTitle name={name}/>
+                    {name && <SectionTitle name={name}/>}
                 </Box>
                 {description && <SectionHelp description={description}/>}
                 </Stack>

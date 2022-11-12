@@ -16,14 +16,14 @@ export default function Section({name,description,elements}: SectionProps) {
         <Grid container>
            <Grid item xs={12}>
                 <Stack direction="row">
-                <Box px={{paddingLeft: '1em', paddingTop: '0.8em'}}>
+                <Box px={{padding: '0.8em 1em 0.2em'}}>
                     {name && <SectionTitle name={name}/>}
                 </Box>
                 {description && <SectionHelp description={description}/>}
                 </Stack>
            </Grid> 
            <Grid item xs={12}>
-                <Box px={{paddingLeft: '1em', paddingTop: '0.4em', paddingBottom: '0.7em'}}>
+                <Box px={{padding: '1em 0.4em 0.5em'}}>
                     {elements}
                 </Box>
            </Grid>

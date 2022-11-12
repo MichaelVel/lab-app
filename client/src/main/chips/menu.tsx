@@ -4,6 +4,7 @@ import {ReactElement} from 'react';
 import {Box, Stack} from '@mui/system';
 
 type State = "blocked" | "active" | "inactive";
+
 interface Props {
   state?: State;
   icon?: ReactElement;

@@ -21,7 +21,7 @@ export default function NavBar(): ReactElement {
         ];
     }
 
-    pages.unshift(["Retos", "/challenges"]);
+    pages.unshift(["Retos", "/challenges/search"]);
     
     return (
             <Stack spacing={1} direction="row">

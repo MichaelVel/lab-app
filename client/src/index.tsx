@@ -16,45 +16,63 @@ import {action as LogOutAction} from './routes/logout';
 import SearchChallenge from './routes/search';
 import {User, UserContext} from './context/user';
 import CreateChallenge from './routes/create-challenge';
+import Challenge from './routes/challenge';
 
-import ListInput from './main/inputs/input-list';
-import {Input, TextField} from '@mui/material';
+import VisibilityChip from './main/chips/visibility';
+import StateChip from './main/chips/state';
+import MenuChip from './main/chips/menu';
+import OverviewSection from './routes/challenge_sections/overview';
+import InstructionsSection from './routes/challenge_sections/instructions';
+import ExplanatioSection from './routes/challenge_sections/instructor-solution';
+import CommentsSection from './routes/challenge_sections/comments';
 
 const router = createBrowserRouter([
     {
-        path: '/',
-        element: <Root />,
-        children: [
+      path: '/',
+      element: <Root />,
+      children: [
+        {
+          path: '/users/register',
+          element: <SignUp />,
+        },
+        {
+          path: '/users/login',
+          element: <SignIn />,
+        },
+        {
+          path: '/users/logout',
+          loader: LogOutAction,
+        },
+        {
+          path: '/challenges/search',
+          element: <SearchChallenge />,
+        },
+        {
+          path: '/users/:id/create-challenge',
+          element: <CreateChallenge />,
+        },
+        {
+          path: '/challenges/:id',
+          element: <Challenge />,
+          children: [
             {
-                path: '/users/register',
-                element: <SignUp />,
+              index: true,
+              element: <OverviewSection/>,
             },
             {
-                path: '/users/login',
-                element: <SignIn />,
+              path: '/challenges/:id/instructions',
+              element: <InstructionsSection />,
             },
             {
-                path: '/users/logout',
-                loader: LogOutAction,
+              path: '/challenges/:id/instructor-solution',
+              element: <ExplanatioSection />,
             },
-            {
-                path: '/challenges',
-                element: <SearchChallenge />,
+            { path: '/challenges/:id/comments',
+              element: <CommentsSection />,
             },
-            {
-                path: '/users/:id/create-challenge',
-                element: <CreateChallenge />,
-            },
-            {
-                path: '/test',
-                element: <form>
-                    <TextField disabled name="AAA" value="BBB" />
-                    <Input name="aaa" value="bbb"/>
-                    <button>submit</button>
-                </form> 
-                ,
-            },
-        ]
+          ],
+        },
+      ]
     },
 ]);
 

@@ -9,7 +9,11 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
 app.use('/api', apiRouter);
+
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Express + Typescript Server. Test Change');

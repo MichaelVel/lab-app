@@ -22,17 +22,17 @@ router
   .post(challengeCreate);
 
 router
-  .route('/challenges/:id')
+  .route('/challenges/:challengeid')
   .get(challengeReadOne)
   .put(challengeUpdateOne)
   .delete(challengeDeleteOne);
 
 router
-  .route('/challenges/:challid/solutions')
+  .route('/challenges/:challengeid/solutions')
   .post(solutionCreate);
 
 router
-  .route('/challenges/:challid/solutions/:solid')
+  .route('/challenges/:challengeid/solutions/:solutionid')
   .get(solutionReadOne)
   .put(solutionUpdateOne)
   .delete(solutionDeleteOne);

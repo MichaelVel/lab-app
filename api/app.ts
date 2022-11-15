@@ -1,9 +1,11 @@
 import express, {Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import apiRouter from './app_server/routes/index';
-
+import passport from 'passport';
 
 require('./app_server/models/db')
+require('./app_server/config/passport')
+
 dotenv.config();
 
 const app: Express = express();
@@ -11,6 +13,7 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(passport.initialize());
 
 app.use('/api', apiRouter);
 

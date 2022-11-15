@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
 const uri = process.env.DBURL as string;
 
-mongoose.connect(uri); 
+const connect = () => {
+  setTimeout( () => mongoose.connect(uri), 1000);
+};
+
 
 mongoose.connection.on('connected', () => {
   console.log('connected to database');
@@ -13,6 +15,7 @@ mongoose.connection.on('connected', () => {
 
 mongoose.connection.on('error', err => {
   console.log('error: ' + err);
+  return connect();
 });
 
 mongoose.connection.on('disconnected', () => {
@@ -44,3 +47,8 @@ process.on('SIGTERM', () => {
   });
 });
 
+
+connect();
+
+require('./challenge');
+require('./solution');

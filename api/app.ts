@@ -1,14 +1,17 @@
 import express, {Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import * as db from './app_server/models/db';
-//require('./app_server/models/db')
+import apiRouter from './app_server/routes/index';
 
+
+require('./app_server/models/db')
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
-app.get('/', (req, res) => {
+app.use('/api', apiRouter);
+
+app.get('/', (req: Request, res: Response) => {
     res.send('Express + Typescript Server. Test Change');
 });
 

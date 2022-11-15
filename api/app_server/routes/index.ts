@@ -14,6 +14,11 @@ import {
   solutionUpdateOne,
 } from '../controllers/solutions';
 
+import { 
+    register,
+    login,
+} from '../controllers/authentication';
+
 const router = Router();
 
 router
@@ -36,5 +41,8 @@ router
   .get(solutionReadOne)
   .put(solutionUpdateOne)
   .delete(solutionDeleteOne);
+
+router.post('/login', login);
+router.post('/register', register);
 
 export default router;

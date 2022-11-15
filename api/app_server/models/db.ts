@@ -52,3 +52,4 @@ connect();
 
 require('./challenge');
 require('./solution');
+require('./users');

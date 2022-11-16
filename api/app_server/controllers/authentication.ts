@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import {authenticate} from 'passport';
+import passport from 'passport';
 import { User } from "../models/users";
 
 export const register = (req: Request, res: Response) => {
@@ -33,7 +33,7 @@ export const login = (req: Request, res: Response) => {
       .status(404)
       .json({"message": "All fields required"});
   }
-  authenticate('local', (err: any, user: any, info: any) => {
+  passport.authenticate('local', (err: any, user: any, info: any) => {
     let token;
     if (err) {
       return res

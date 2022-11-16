@@ -1,14 +1,52 @@
 import { Request, Response } from 'express';
 import { Challenge } from '../models/challenge';
+import { subWeeks } from 'date-fns';
 
-export const challengeList = (req: Request, res: Response) => {
+export const challengeList = async(req: Request, res: Response) => {
+  const {filter} = req.query;
+  const lastWeek = subWeeks(new Date(), 1);
+  console.log(lastWeek);
+  console.log(new Date());
+  try {
+    const results = filter 
+      ? await Challenge.aggregate([
+        { 
+          $match: {
+            [filter as string ]: "published"  // Harcoded TODO: link with data of 
+                                              // searchbar.
+          }
+        }
+      ]) 
+      : await Challenge.aggregate([
+        {
+          $match: {
+            creationDate: { $gte: lastWeek }
+          }
+        }
+      ]);
+
+    res
+      .status(200)
+      .json(results)
+  } catch (err) {
+    res
+      .status(404)
+      .json(err);
+  }
 };
 
 export const challengeCreate = (req: Request, res: Response) => {
-  console.log(req.body);
-  res
-    .status(201)
-    .json({"test": req.body});
+  Challenge.create({...req.body }, (err: any, challenge: any) => {
+    if (err) {
+      res
+        .status(400)
+        .json(err);
+    } else {
+      res
+        .status(201)
+        .json(challenge);
+    }
+  });
 };
 
 export const challengeReadOne = (req: Request, res: Response) => {
@@ -33,8 +71,63 @@ export const challengeReadOne = (req: Request, res: Response) => {
 };
 
 export const challengeUpdateOne = (req: Request, res: Response) => {
+  const { challengeid } = req.params;
+
+  if (!challengeid) {
+    return res
+      .status(404)
+      .json({
+        "message": "Not found, challenge id is required"
+      });
+  }
+
+  Challenge.findByIdAndUpdate(
+    req.params.challengeid,
+    {...req.body }, 
+    (err: any, challenge: any) => {
+    if (err) {
+      res
+        .status(400)
+        .json(err);
+    } else if (!challenge) {
+      res
+        .status(404)
+        .json({"message": "Challenge not found"});
+    } else {
+      res
+        .status(200)
+        .json(challenge);
+    }
+  });
 };
 
 export const challengeDeleteOne = (req: Request, res: Response) => {
+  const { challengeid } = req.params;
+
+  if (!challengeid) {
+    return res
+      .status(404)
+      .json({
+        "message": "Not found, challenge id is required"
+      });
+  }
+
+  Challenge.findByIdAndDelete(
+    challengeid,
+    (err: any, challenge: any) => {
+    if (err) {
+      res
+        .status(404)
+        .json(err);
+    } else if (!challenge) {
+      res
+        .status(404)
+        .json({"message": "Challenge not found"});
+    } else {
+      res
+        .status(204)
+        .json(challenge);
+    }
+  });
 };
 

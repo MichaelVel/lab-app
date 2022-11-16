@@ -17,10 +17,25 @@ const explanationSchema = new Schema({
 });
 
 const challengeSchema = new Schema({
-    name: { type: String, required: true },
-    state: { type: String, required: true},
-    isPublic: { type: Boolean, required: true },
-    allowAnswers: { type: Boolean, required: true },
+    name: { 
+      type: String,
+      required: true,
+    },
+    state: { 
+      type: String,
+      required: true},
+    isPublic: {
+      type: Boolean,
+      required: true,
+    },
+    allowAnswers: {
+      type: Boolean,
+      required: true,
+    },
+    creationDate: {
+      type: Date,
+      default: () => new Date(),
+    },
     context: contextSchema,
     instructions: instructionSchema,
     explanation: explanationSchema,

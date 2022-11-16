@@ -21,9 +21,14 @@ const challengeSchema = new Schema({
       type: String,
       required: true,
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
     state: { 
       type: String,
-      required: true},
+      required: true
+    },
     isPublic: {
       type: Boolean,
       required: true,

@@ -9,13 +9,17 @@ const secret = process.env.JWT_SECRET as string;
 
 const userSchema = new Schema({
     email: {
-        type: String,
-        unique: true,
-        required: true,
+      type: String,
+      unique: true,
+      required: true,
     },
     name: { 
-        type: String,
-        required: true,
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
     },
     hash: String,
     salt: String,

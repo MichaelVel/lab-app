@@ -1,4 +1,8 @@
 import {Router} from 'express';
+import {expressjwt} from 'express-jwt';
+
+import dotenv from 'dotenv';
+
 import {
   challengeList,
   challengeCreate,
@@ -19,28 +23,36 @@ import {
     login,
 } from '../controllers/authentication';
 
+dotenv.config();
+
+const secret = process.env.JWT_SECRET as string;
+const auth = expressjwt({
+  secret: secret,
+  algorithms: ["HS256"],
+});
+
 const router = Router();
 
 router
   .route('/challenges')
   .get(challengeList)
-  .post(challengeCreate);
+  .post(auth,challengeCreate);
 
 router
   .route('/challenges/:challengeid')
   .get(challengeReadOne)
-  .put(challengeUpdateOne)
-  .delete(challengeDeleteOne);
+  .put(auth, challengeUpdateOne)
+  .delete(auth, challengeDeleteOne);
 
 router
   .route('/challenges/:challengeid/solutions')
-  .post(solutionCreate);
+  .post(auth, solutionCreate);
 
 router
   .route('/challenges/:challengeid/solutions/:solutionid')
   .get(solutionReadOne)
-  .put(solutionUpdateOne)
-  .delete(solutionDeleteOne);
+  .put(auth, solutionUpdateOne)
+  .delete(auth, solutionDeleteOne);
 
 router.post('/login', login);
 router.post('/register', register);

@@ -17,6 +17,13 @@ app.use(passport.initialize());
 
 app.use('/api', apiRouter);
 
+app.use((err: any, req: Request, res: Response, next: any) => {
+  if (err.name === "UnauthorizedError") {
+    res
+      .status(401)
+      .json({"message": err.name + ": " + err.message});
+  }
+});
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Express + Typescript Server. Test Change');

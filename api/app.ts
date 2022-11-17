@@ -25,11 +25,10 @@ app.use((err: any, req: Request, res: Response, next: any) => {
   }
 });
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Express + Typescript Server. Test Change');
-});
-
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });
 
+app.get('/express', (req: Request, res: Response) => {
+    res.send({express:'Express + Typescript Server. Test Change'});
+});

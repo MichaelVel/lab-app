@@ -3,7 +3,6 @@ import passport from 'passport';
 import { User } from "../models/users";
 
 export const register = (req: Request, res: Response) => {
-  console.log(req.body);
   if (!req.body.name || !req.body.email || !req.body.password || !req.body.role) {
     return res
       .status(404)
@@ -11,6 +10,8 @@ export const register = (req: Request, res: Response) => {
   }
 
   const user = new User({...req.body});
+  user.setPassword(req.body.password);
+
   user.save((err) => {
     if (err) {
       res

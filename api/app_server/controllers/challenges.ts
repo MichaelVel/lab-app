@@ -36,7 +36,13 @@ export const challengeList = async(req: Request, res: Response) => {
 };
 
 export const challengeCreate = (req: Request, res: Response) => {
-  Challenge.create({...req.body }, (err: any, challenge: any) => {
+  if (req.auth.role !== 'instructor') {
+    res
+      .status(403)
+      .json({ message: "Only for instructors"});
+  }
+
+  Challenge.create({...req.body, user: req.auth._id }, (err: any, challenge: any) => {
     if (err) {
       res
         .status(400)
@@ -73,6 +79,12 @@ export const challengeReadOne = (req: Request, res: Response) => {
 export const challengeUpdateOne = (req: Request, res: Response) => {
   const { challengeid } = req.params;
 
+  if (req.auth.role !== 'instructor') {
+    res
+      .status(403)
+      .json({ "message": "Only for instructors"});
+  }
+
   if (!challengeid) {
     return res
       .status(404)
@@ -81,24 +93,36 @@ export const challengeUpdateOne = (req: Request, res: Response) => {
       });
   }
 
-  Challenge.findByIdAndUpdate(
-    req.params.challengeid,
-    {...req.body }, 
-    (err: any, challenge: any) => {
-    if (err) {
-      res
-        .status(400)
-        .json(err);
-    } else if (!challenge) {
-      res
-        .status(404)
-        .json({"message": "Challenge not found"});
-    } else {
-      res
-        .status(200)
-        .json(challenge);
-    }
-  });
+  Challenge
+    .findById(req.params.challengeid)
+    .exec((err: any, challenge: any) => {
+      if (err) {
+        res
+          .status(400)
+          .json(err);
+      } else if (!challenge) {
+        res
+          .status(404)
+          .json({"message": "Challenge not found"});
+      } else if (challenge.user !== req.auth._id) {
+        res
+          .status(403)
+          .json({"message": "User id does not match"});
+      }
+
+      challenge = {...challenge, ...req.body};
+      challenge.save((err: any, challenge: any) => {
+        if (err) {
+          res
+            .status(404)
+            .json(err);
+        } else {
+          res
+            .status(200)
+            .json(challenge)
+        }
+      });
+    });
 };
 
 export const challengeDeleteOne = (req: Request, res: Response) => {

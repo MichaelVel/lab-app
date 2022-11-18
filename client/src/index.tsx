@@ -12,15 +12,10 @@ import './index.css';
 import Root from './routes/root';
 import SignIn from './routes/login';
 import SignUp from './routes/register';
-import {action as LogOutAction} from './routes/logout';
 import SearchChallenge from './routes/search';
-import {User, UserContext} from './context/user';
 import CreateChallenge from './routes/create-challenge';
 import Challenge from './routes/challenge';
 
-import VisibilityChip from './main/chips/visibility';
-import StateChip from './main/chips/state';
-import MenuChip from './main/chips/menu';
 import OverviewSection from './routes/challenge_sections/overview';
 import InstructionsSection from './routes/challenge_sections/instructions';
 import ExplanatioSection from './routes/challenge_sections/instructor-solution';
@@ -38,10 +33,6 @@ const router = createBrowserRouter([
         {
           path: '/users/login',
           element: <SignIn />,
-        },
-        {
-          path: '/users/logout',
-          loader: LogOutAction,
         },
         {
           path: '/challenges/search',
@@ -81,27 +72,9 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// Testing purposes
-const aUser: User = {
-    name: 'anonymous',
-    rol: 'Anonymous',
-}
-
-const user1: User = {
-    name: 'Student',
-    rol: 'Student',
-}
-
-const user2: User = {
-    name: 'Instructor',
-    rol: 'Instructor',
-}
-
 root.render(
   <React.StrictMode>
-    <UserContext.Provider value={user2}>
         <RouterProvider router={router} />
-    </UserContext.Provider>
   </React.StrictMode>
 );
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
     Avatar,
@@ -16,10 +17,10 @@ import {
     Logout,
 } from '@mui/icons-material';
 
-import {UserContext} from '../context/user';
+import {useAuth} from '../context/auth';
 
 export function AccountMenu() {
-  const user = React.useContext(UserContext);
+  const {user, logout} = useAuth();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -49,7 +50,7 @@ export function AccountMenu() {
             aria-expanded={open ? 'true' : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-                { user.rol === "Student" ? 'E' : 'I' }
+                {user && user.role === "student" ? 'E' : 'I' }
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -91,12 +92,12 @@ export function AccountMenu() {
       >
         <MenuItem>
           <Avatar />
-          {user.name}
+          {user && user.name}
         </MenuItem>
         <Divider />
         <MenuItem>
           <Button 
-            href="/users/logout"
+            onClick={logout}
             startIcon={<Logout />}
             size="small"
           >
@@ -109,31 +110,32 @@ export function AccountMenu() {
 }
 
 export function UserLoginSection(): React.ReactElement {
-    return (
-      <Box 
-        sx={{ 
-            display: 'flex', 
-            flexDirection: 'row-reverse',
-            paddingRight: '0.5em',
-        }}
-      >
-        <Stack direction="row" spacing={1}>
-            <Button 
-                variant="contained" 
-                href="/users/register"
-                size="small"
-            >
-                Registrarse
-            </Button>
-            <Button 
-                variant="outlined"
-                href="/users/login"
-                size="small"
-            >
-                Iniciar Sesión
-            </Button>
-        </Stack>
-      </Box>
-    );
+  const navigate = useNavigate();
+  return (
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'row-reverse',
+        paddingRight: '0.5em',
+      }}
+    >
+      <Stack direction="row" spacing={1}>
+        <Button 
+          variant="contained" 
+          onClick={() => navigate("/users/register")}
+          size="small"
+        >
+          Registrarse
+        </Button>
+        <Button 
+          variant="outlined"
+          onClick={() => navigate("/users/login")}
+          size="small"
+        >
+          Iniciar Sesión
+        </Button>
+      </Stack>
+    </Box>
+  );
 }
 

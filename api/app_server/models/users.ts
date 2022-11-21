@@ -15,6 +15,7 @@ const userSchema = new Schema({
     },
     name: { 
       type: String,
+      unique: true,
       required: true,
     },
     role: {
@@ -23,7 +24,7 @@ const userSchema = new Schema({
     },
     hash: String,
     salt: String,
-});
+}, {strict: true});
 
 userSchema.methods.setPassword = function (password: string) {
     this.salt = randomBytes(16).toString('hex');

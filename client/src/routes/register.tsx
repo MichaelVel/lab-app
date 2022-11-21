@@ -29,7 +29,7 @@ export async function action({request}: ActionFunctionArgs) {
   const body = await response.json();
   
   if (response.status !== 200) { 
-    console.log(body);
+    alert(body.message);
     return;
   }
   return redirect('/');

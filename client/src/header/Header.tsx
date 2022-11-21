@@ -1,6 +1,5 @@
 import {Grid} from '@mui/material';
 import {useAuth} from '../context/auth';
-import './Header.css';
 
 import NavBar from './navbar';
 import {

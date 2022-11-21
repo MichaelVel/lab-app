@@ -1,12 +1,13 @@
 import {ReactElement } from 'react';
 import { useAuth } from '../context/auth'; 
-
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import {
     Stack,
 } from '@mui/material';
 
 export default function NavBar(): ReactElement {
+    let navigate = useNavigate();
     let {user} = useAuth();
     let pages: Array<[string, string]> = [["Retos", "/challenges/search"]];
     
@@ -25,7 +26,15 @@ export default function NavBar(): ReactElement {
     
     return (
       <Stack spacing={1} direction="row">
-          {pages.map( ([name, route]) => <Button href={route}>{name}</Button>)}
+          {
+            pages.map( ([name, route]) => {
+              return (
+              <Button onClick={() => navigate(route)}>
+                {name}
+              </Button>
+              );
+            })
+          }
       </ Stack>
     );
 }

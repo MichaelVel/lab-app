@@ -21,7 +21,6 @@ import {useAuth} from '../context/auth';
 
 export function AccountMenu() {
   const {user, logout} = useAuth();
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

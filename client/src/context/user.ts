@@ -20,7 +20,7 @@ export class User implements IUser {
       const decode: any = jwt_decode(args[0]);
       this.token = args[0]; 
       this._id = decode._id;
-      this.name = decode._name;
+      this.name = decode.name;
       this.role = decode.role;
       return this;
     }

@@ -1,6 +1,6 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, ReactNode } from "react";
 import { IUser } from './user';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate} from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
 interface IAuth {
@@ -9,9 +9,14 @@ interface IAuth {
   logout?: any;
 }
 
+interface Props {
+    children?: ReactNode;
+    roleAllowed?: string;
+}
+
 const AuthContext = createContext<IAuth>({});
 
-export const AuthProvider = ({ children }: any) => {
+export const AuthProvider = ({ children }: Props) => {
     const [user, setUser] = useLocalStorage("user", null);
     const navigate = useNavigate();
 
@@ -44,4 +49,10 @@ export const useAuth = () => {
 };
 
 
-
+export const ProtectedRoute = ({children, roleAllowed}: Props) => {
+  const { user } = useAuth();
+  if (!user || user.role !== roleAllowed) {
+    return <Navigate to='/' />;
+  }
+  return children;
+};

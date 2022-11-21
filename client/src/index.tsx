@@ -11,7 +11,7 @@ import './index.css';
 
 import Root from './routes/root';
 import SignIn from './routes/login';
-import SignUp from './routes/register';
+import SignUp, { action as registerAction } from './routes/register';
 import SearchChallenge from './routes/search';
 import CreateChallenge from './routes/create-challenge';
 import Challenge from './routes/challenge';
@@ -29,6 +29,7 @@ const router = createBrowserRouter([
         {
           path: '/users/register',
           element: <SignUp />,
+          action: registerAction,
         },
         {
           path: '/users/login',

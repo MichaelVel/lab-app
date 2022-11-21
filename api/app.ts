@@ -30,5 +30,5 @@ app.listen(port, () => {
 });
 
 app.get('/express', (req: Request, res: Response) => {
-    res.send({express:'Express + Typescript Server. Test Change'});
+    res.send({token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mzc2OGYxYWJlMmI1NGY1MDYxMDM3MjQiLCJlbWFpbCI6InRlc3Q1QHVzZXIuY29tIiwibmFtZSI6InRlc3RVc2VyMSIsInJvbGUiOiJpbnN0cnVjdG9yIiwiZXhwIjoxNjY5Mzk4ODU2LCJpYXQiOjE2Njg3OTQwNTZ9.IRvOiroEM8uBBZHYc3Z3tE5k8DvPy720zbR0R40bAhg'});
 });

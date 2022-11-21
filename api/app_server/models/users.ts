@@ -44,6 +44,7 @@ userSchema.methods.generateJwt = function () {
         _id: this._id,
         email: this.email,
         name: this.name,
+        role: this.role,
         exp: Math.trunc(expiry.getTime() / 1000),
     }, secret );
 };

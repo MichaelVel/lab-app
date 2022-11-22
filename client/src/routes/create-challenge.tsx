@@ -85,7 +85,7 @@ export default function CreateChallenge() {
               <Grid item xs= {8}>
                 <ButtonGroup orientation="vertical">
                   <Button type="submit">Guardar Cambios</Button>
-                  <Button type="submit">Submit</Button>
+                  <Button variant="contained" type="submit">Submit</Button>
                 </ButtonGroup>
               </Grid>
             </Grid>

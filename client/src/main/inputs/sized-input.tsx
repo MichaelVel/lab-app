@@ -16,7 +16,6 @@ export default function VariableSizeInput(props: {name:string, value:string}) {
                 backgroundColor: 'rgba(0,0,0,0)',
                 border: 0,
             }} 
-            autoFocus 
             onChange={changeHandler}
             name={props.name}
             value={value}

@@ -20,7 +20,6 @@ import OverviewSection from './routes/challenge_sections/overview';
 import InstructionsSection from './routes/challenge_sections/instructions';
 import ExplanatioSection from './routes/challenge_sections/instructor-solution';
 import CommentsSection from './routes/challenge_sections/comments';
-
 const router = createBrowserRouter([
     {
       path: '/',
@@ -75,7 +74,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
   </React.StrictMode>
 );
 

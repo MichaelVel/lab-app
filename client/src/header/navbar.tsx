@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import {
     Stack,
 } from '@mui/material';
-
 export default function NavBar(): ReactElement {
     let navigate = useNavigate();
     let {user} = useAuth();

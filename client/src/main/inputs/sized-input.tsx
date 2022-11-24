@@ -1,13 +1,19 @@
 import * as React from 'react';
 
-export default function VariableSizeInput(props: {name:string, value:string}) {
+interface Props {
+  name: string;
+  value: string;
+  callback: Function;
+  dataKey: number;
+}
+
+export default function VariableSizeInput(props: Props) {
     const [width, setWidth] = React.useState(props.value.length);
     const [value, setValue] = React.useState(props.value);
     const changeHandler = (evt: any ) => {
         setWidth(evt.target.value.length);
         setValue(evt.target.value);
     };
-
     return (
         <input 
             style={{ 
@@ -19,6 +25,7 @@ export default function VariableSizeInput(props: {name:string, value:string}) {
             onChange={changeHandler}
             name={props.name}
             value={value}
+            onBlur={() => props.callback(props.dataKey,value)}
         />
     );
 }

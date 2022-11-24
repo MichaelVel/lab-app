@@ -11,9 +11,20 @@ import {
     TextField,
 } from '@mui/material';
 
-export default function ListInput(props: {listName?: string, inputName: string}) {
+interface Props {
+  listName?: string;
+  inputName: string;
+  subCollectionName: string;
+  value: string[];
+  callback: Function;
+}
+export default function ListInput(props: Props) {
   const [textInput, setTextInput] = React.useState<string>();
-  const [listData, setListData] = React.useState<string[]>([]);
+  const [listData, setListData] = React.useState<string[]>(props.value);
+
+  React.useEffect(() => {
+    props.callback(props.inputName,listData,props.subCollectionName)
+  }, [listData]);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -26,6 +37,12 @@ export default function ListInput(props: {listName?: string, inputName: string})
   const handleChange = (evt: any ) => {
     setTextInput(evt.target.value);
   };
+
+  const handleListChange = (evt: any, index:number) => {
+    const newListData = listData.map( (x,i) => index === i ? evt.target.value : x);
+    setListData(newListData);
+  }
+    
 
   const handleClick = () => {
     if (!textInput) { return; }
@@ -92,6 +109,7 @@ export default function ListInput(props: {listName?: string, inputName: string})
                                 name={props.inputName}
                                 value={data}
                                 variant="filled"
+                                onChange={(e:any) => handleListChange(e,index)}
                             />}
                         />
                     </ListItem>

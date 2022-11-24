@@ -13,7 +13,7 @@ import Root from './routes/root';
 import SignIn from './routes/login';
 import SignUp, { action as registerAction } from './routes/register';
 import SearchChallenge from './routes/search';
-import CreateChallenge from './routes/create-challenge';
+import CreateChallenge, { action as createAction } from './routes/create-challenge';
 import Challenge from './routes/challenge';
 
 import OverviewSection from './routes/challenge_sections/overview';
@@ -41,6 +41,7 @@ const router = createBrowserRouter([
         {
           path: '/users/:id/create-challenge',
           element: <CreateChallenge />,
+          action:  createAction,
         },
         {
           path: '/challenges/:id',

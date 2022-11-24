@@ -12,7 +12,10 @@ import './index.css';
 import Root from './routes/root';
 import SignIn from './routes/login';
 import SignUp, { action as registerAction } from './routes/register';
-import SearchChallenge from './routes/search';
+import SearchChallenge, {
+  action as searchAction,
+  loader as searchLoader,
+} from './routes/search';
 import CreateChallenge, { action as createAction } from './routes/create-challenge';
 import Challenge from './routes/challenge';
 
@@ -37,6 +40,8 @@ const router = createBrowserRouter([
         {
           path: '/challenges/search',
           element: <SearchChallenge />,
+          action: searchAction,
+          loader: searchLoader,
         },
         {
           path: '/users/:id/create-challenge',

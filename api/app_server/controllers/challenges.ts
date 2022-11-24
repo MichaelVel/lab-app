@@ -5,8 +5,6 @@ import { subWeeks } from 'date-fns';
 export const challengeList = async(req: Request, res: Response) => {
   const {filter} = req.query;
   const lastWeek = subWeeks(new Date(), 1);
-  console.log(lastWeek);
-  console.log(new Date());
   try {
     const results = filter 
       ? await Challenge.aggregate([
@@ -40,6 +38,13 @@ export const challengeCreate = (req: Request, res: Response) => {
     res
       .status(403)
       .json({ message: "Only for instructors"});
+  }
+
+  if (req.headers['content-type']?.includes('multipart/form-data')) {
+    console.log('hello');
+    res
+      .status(201)
+      .json({"success": true});
   }
 
   Challenge.create({...req.body, user: req.auth._id }, (err: any, challenge: any) => {

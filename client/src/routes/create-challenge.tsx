@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import {
   Box,
   Button,
@@ -13,13 +13,13 @@ import {
   RadioGroup,
   TextField,
   TextFieldProps,
+  Typography,
 } from '@mui/material';
 
 import {
   Form,
   ActionFunctionArgs, 
   LoaderFunctionArgs,
-  useSubmit,
 } from "react-router-dom";
 
 import MainLayout from "../main/main";
@@ -29,6 +29,7 @@ import ListInput from "../main/inputs/input-list";
 import { Challenge } from "../context/challenge";
 import { User } from "../context/user";
 import {useAuth} from '../context/auth';
+import UploadButtons from '../main/inputs/file-input';
 
 export async function loader({request, params}: LoaderFunctionArgs) {
   // got an idea to use this with two kinds of urls 
@@ -311,25 +312,20 @@ export default function CreateChallenge() {
               elements={
                 <Grid container spacing={1}>
                   <Grid item xs={6} sx={{padding:'0.8em'}}>
-                    <p>
+                    <Typography sx={{ padding: '0em 0.3em', textAlign: 'justify'}}>
                     En esta sección el maestro debe subir
                     la explicación del experimento: el que
                     el como y un desarrollo breve del tema
                     principal. Esta explicación puede estar 
-                    en un formato PDF, JPEG o el maestro puede
-                    optar por subir un video a youtube y subir
-                    el link. TODO: El desarrollo de esta sección
-                    se llevara a cabo en su totalidad en el 
-                    proximo sprint.
-                    </p> 
+                    en un formato PDF o JPEG.
+                    </Typography> 
                   </Grid>
                   <Grid item xs={6} sx={{padding:'0.8em'}}>
-                    <TextField 
-                        size="small"
-                        label="Descripción"
-                        multiline
-                        minRows={4}
-                        fullWidth
+                    <UploadButtons 
+                      name="resource"
+                      subCollectionName='explanation'
+                      value={challenge.explanation ? challenge.explanation.resource: null}
+                      callback={updateForm}
                     />
                   </Grid>
                 </Grid>

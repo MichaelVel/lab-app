@@ -17,7 +17,7 @@ export interface IChallenge {
     submition: string;
   };
   explanation: {
-    resource: File;
+    resource: ArrayBuffer;
   }
 
 }
@@ -40,7 +40,7 @@ export class Challenge implements Partial<IChallenge> {
     submition: "",
   };
   explanation?: {
-    resource: File;
+    resource: ArrayBuffer;
   }
   constructor(userId: string) {
     this.userId = userId;

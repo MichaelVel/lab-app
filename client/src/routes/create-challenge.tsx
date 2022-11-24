@@ -83,12 +83,12 @@ export default function CreateChallenge() {
   }
 
   async function handleSubmition(event: any) {
-    console.log(JSON.stringify(challenge))
     const response = await fetch('/api/challenges', {
       method: "POST",
       headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Authorization': !user ? 'notToken' : 'Bearer ' + user.token
       },
       body: JSON.stringify(challenge),
     });
@@ -98,6 +98,7 @@ export default function CreateChallenge() {
       alert(body.message);
       return;
     }
+    console.log(body);
   }
 
   function updateForm(name: string, value: any, subCollection?:string) {
@@ -236,6 +237,7 @@ export default function CreateChallenge() {
                     <ControlledTextField 
                       size="small" 
                       label="Titulo"
+                      subCollectionName="context"
                       name="mainTopic"
                       value={challenge.context.mainTopic}
                       callback={updateForm}
@@ -243,6 +245,7 @@ export default function CreateChallenge() {
                     <h3>Otros Temas</h3> 
                     <InputChipsArray 
                       value={challenge.context.labels}
+                      subCollectionName="context"
                       callback={updateForm}
                     />
                   </Grid>
@@ -251,6 +254,7 @@ export default function CreateChallenge() {
                     <ControlledTextField 
                       size="small"
                       label="Descripción"
+                      subCollectionName="context"
                       multiline
                       minRows={6}
                       fullWidth
@@ -296,7 +300,7 @@ export default function CreateChallenge() {
                       multiline
                       minRows={4}
                       fullWidth
-                      name="submitInstructions"
+                      name="submition"
                       subCollectionName='instructions'
                       value={challenge.instructions.submition}
                       callback={updateForm}
@@ -324,7 +328,7 @@ export default function CreateChallenge() {
                     <UploadButtons 
                       name="resource"
                       subCollectionName='explanation'
-                      value={challenge.explanation ? challenge.explanation.resource: null}
+                      value={null}
                       callback={updateForm}
                     />
                   </Grid>

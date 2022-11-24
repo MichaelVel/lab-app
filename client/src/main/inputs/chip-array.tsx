@@ -16,6 +16,7 @@ interface ChipData {
 
 interface Props {
   value: string[];
+  subCollectionName: string;
   callback: Function;
 }
 
@@ -24,7 +25,7 @@ const ListItem = styled('li')(({ theme }) => ({
 }));
 
 
-export default function InputChipsArray({value, callback}: Props) {
+export default function InputChipsArray({value, callback, subCollectionName}: Props) {
   const [chipData, setChipData] = React.useState<ChipData[]>(
       value.length === 0
       ? [{ key: 0, label: 'Nuevo Tema' }]
@@ -47,7 +48,7 @@ export default function InputChipsArray({value, callback}: Props) {
   }
 
   React.useEffect(() => {
-    callback("labels", chipData.map(x => x.label))
+    callback("labels", chipData.map(x => x.label),subCollectionName)
   }, [chipData]);
 
   return (

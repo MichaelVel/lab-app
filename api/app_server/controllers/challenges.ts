@@ -77,7 +77,7 @@ export const challengeReadOne = (req: Request, res: Response) => {
       }
       res
         .status(200)
-        .json({"status": "yes", "response": challenge });
+        .json(challenge);
     }); 
 };
 

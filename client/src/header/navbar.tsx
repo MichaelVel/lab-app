@@ -26,9 +26,9 @@ export default function NavBar(): ReactElement {
     return (
       <Stack spacing={1} direction="row">
           {
-            pages.map( ([name, route]) => {
+            pages.map( ([name, route], i:number) => {
               return (
-              <Button onClick={() => navigate(route)}>
+              <Button key={i} onClick={() => navigate(route)}>
                 {name}
               </Button>
               );

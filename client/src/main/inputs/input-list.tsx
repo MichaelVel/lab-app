@@ -14,7 +14,7 @@ import {
 interface Props {
   listName?: string;
   inputName: string;
-  subCollectionName: string;
+  subcollectionname: string;
   value: string[];
   callback: Function;
 }
@@ -23,7 +23,7 @@ export default function ListInput(props: Props) {
   const [listData, setListData] = React.useState<string[]>(props.value);
 
   React.useEffect(() => {
-    props.callback(props.inputName,listData,props.subCollectionName)
+    props.callback(props.inputName,listData,props.subcollectionname)
   }, [listData]);
 
   const inputRef = React.useRef<HTMLInputElement>(null);

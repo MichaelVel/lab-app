@@ -18,15 +18,15 @@ async function main(file: File) {
 
 interface Props {
   name: string;
-  subCollectionName: string;
+  subcollectionname: string;
   value: File|null;
   callback: Function;
 }
-export default function UploadButtons({name,value,callback,subCollectionName}: Props) {
+export default function UploadButtons({name,value,callback,subcollectionname}: Props) {
   const [selectedFile, setSelectedFile] =  React.useState<File|null>(value);
 
   React.useEffect(() => {
-    callback(name,selectedFile,subCollectionName);
+    callback(name,selectedFile,subcollectionname);
   },[selectedFile])
   
   const handleDelete = () => {

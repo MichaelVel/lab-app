@@ -20,6 +20,9 @@ import {
   Form,
   ActionFunctionArgs, 
   LoaderFunctionArgs,
+  useLoaderData,
+  useNavigate,
+  useParams,
 } from "react-router-dom";
 
 import MainLayout from "../main/main";
@@ -31,22 +34,26 @@ import { User } from "../context/user";
 import {useAuth} from '../context/auth';
 import UploadButtons from '../main/inputs/file-input';
 
-export async function loader({request, params}: LoaderFunctionArgs) {
-  // got an idea to use this with two kinds of urls 
-  //    -/users/:userId/create-challenge
-  //    -/users/:userId/cerate-challenge/challengeId
-  if (!params.userId) { return; }
-  if (!params.challengeId) {
-    return new Challenge(params.userId);
+export async function loader({params}: LoaderFunctionArgs) {
+  const response = await fetch(`/api/challenges/${params.challengeId}`, {
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+  });
+  
+  const body = await response.json();
+  if (response.status !== 200) { 
+    alert(body.message);
+    return;
   }
-  // -fetch data
 
+  return body;
 }
 
 export async function action({request}: ActionFunctionArgs) {
   const data = await request.formData();
 }
-
 
 function getChallenge(user: User|undefined) {
   if (!user) {         // In router exist a guard to prevent a unauthorized 
@@ -57,34 +64,21 @@ function getChallenge(user: User|undefined) {
 
 
 export default function CreateChallenge() {
-  let {user} = useAuth();
-  const [challenge, setChallenge] = useState(getChallenge(user));
+  const {user} = useAuth();
+  const fetchedChallenge: any = useLoaderData();
+  const [challenge, setChallenge] = useState(
+    fetchedChallenge ? fetchedChallenge : getChallenge(user)
+  );
+  const navigate = useNavigate();
+  const { challengeId } = useParams();
 
-  async function handleSave(event: any) {
-  if (!challenge._id) {
-    //handleSubmition(event)
-    console.log(challenge);
+  async function handleSave() {
+  if (!challengeId) {
+    handleSubmition();
     return;
   }
-    const response = await fetch(`/api/challenges/${challenge._id}`, {
+    const response = await fetch(`/api/challenges/${challengeId}`, {
       method: "PUT",
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-      },
-      body: JSON.stringify(challenge),
-    });
-    const body = await response.json();
-    
-    if (response.status !== 200) { 
-      alert(body.message);
-      return;
-    }
-  }
-
-  async function handleSubmition(event: any) {
-    const response = await fetch('/api/challenges', {
-      method: "POST",
       headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -98,13 +92,36 @@ export default function CreateChallenge() {
       alert(body.message);
       return;
     }
-    console.log(body);
   }
 
-  function updateForm(name: string, value: any, subCollection?:string) {
-    if (subCollection) {
-      const sub: any = challenge[subCollection as keyof Challenge];
-      setChallenge({...challenge, [`${subCollection}`]: {
+  async function handleSubmition() {
+    if (challengeId) {
+      handleSave();
+      return;
+    }
+    const response = await fetch('/api/challenges', {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': !user ? 'notToken' : 'Bearer ' + user.token
+      },
+      body: JSON.stringify(challenge),
+    });
+    const body = await response.json();
+    
+    if (response.status !== 201) { 
+      alert(body.message);
+      return;
+    }
+
+    navigate(`/users/${user?.name}/create-challenge/${body._id}`)
+  }
+
+  function updateForm(name: string, value: any, subcollection?:string) {
+    if (subcollection) {
+      const sub: any = challenge[subcollection as keyof Challenge];
+      setChallenge({...challenge, [`${subcollection}`]: {
           ...sub, [`${name}`]: value}})
     } else {
       setChallenge({...challenge, [`${name}`]: value})
@@ -237,7 +254,7 @@ export default function CreateChallenge() {
                     <ControlledTextField 
                       size="small" 
                       label="Titulo"
-                      subCollectionName="context"
+                      subcollectionname="context"
                       name="mainTopic"
                       value={challenge.context.mainTopic}
                       callback={updateForm}
@@ -245,7 +262,7 @@ export default function CreateChallenge() {
                     <h3>Otros Temas</h3> 
                     <InputChipsArray 
                       value={challenge.context.labels}
-                      subCollectionName="context"
+                      subcollectionname="context"
                       callback={updateForm}
                     />
                   </Grid>
@@ -254,7 +271,7 @@ export default function CreateChallenge() {
                     <ControlledTextField 
                       size="small"
                       label="Descripción"
-                      subCollectionName="context"
+                      subcollectionname="context"
                       multiline
                       minRows={6}
                       fullWidth
@@ -277,7 +294,7 @@ export default function CreateChallenge() {
                     <ListInput 
                       listName="Materiales añadidos"
                       inputName='materials'
-                      subCollectionName='instructions'
+                      subcollectionname='instructions'
                       value={challenge.instructions.materials}
                       callback={updateForm}
                     />
@@ -287,7 +304,7 @@ export default function CreateChallenge() {
                     <ListInput 
                       listName="Pasos del experimento"
                       inputName='steps'
-                      subCollectionName='instructions'
+                      subcollectionname='instructions'
                       value={challenge.instructions.steps}
                       callback={updateForm}
                     />
@@ -301,7 +318,7 @@ export default function CreateChallenge() {
                       minRows={4}
                       fullWidth
                       name="submition"
-                      subCollectionName='instructions'
+                      subcollectionname='instructions'
                       value={challenge.instructions.submition}
                       callback={updateForm}
                     />
@@ -327,7 +344,7 @@ export default function CreateChallenge() {
                   <Grid item xs={6} sx={{padding:'0.8em'}}>
                     <UploadButtons 
                       name="resource"
-                      subCollectionName='explanation'
+                      subcollectionname='explanation'
                       value={null}
                       callback={updateForm}
                     />
@@ -344,7 +361,7 @@ export default function CreateChallenge() {
 }
 
 
-function ControlledTextField(props: TextFieldProps & {callback: Function, subCollectionName?: string}) {
+function ControlledTextField(props: TextFieldProps & {callback: Function, subcollectionname?: string}) {
   const [text, setText] = useState(props.value);
   
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -357,8 +374,8 @@ function ControlledTextField(props: TextFieldProps & {callback: Function, subCol
         value={text}
         onChange={handleChange}
         onBlur={(e:any) => {
-          props.subCollectionName 
-            ? props.callback(e.currentTarget.name,text,props.subCollectionName)
+          props.subcollectionname 
+            ? props.callback(e.currentTarget.name,text,props.subcollectionname)
             : props.callback(e.currentTarget.name,text)
         }}
     />

@@ -7,25 +7,33 @@ import {
 } from 'react-router-dom';
 
 import './index.css';
-//import reportWebVitals from './reportWebVitals';
 
-import Root from './routes/root';
-import SignIn from './routes/login';
-import SignUp, { action as registerAction } from './routes/register';
+import SignUp, {
+  action as registerAction 
+} from './routes/register';
+
 import SearchChallenge, {
   action as searchAction,
   loader as searchLoader,
 } from './routes/search';
-import CreateChallenge, { action as createAction } from './routes/create-challenge';
+
+import CreateChallenge, {
+  action as createAction,
+  loader as createLoader,
+} from './routes/create-challenge';
+
 import Challenge, {
   action as challengeAction,
   loader as challengeLoader,
 } from './routes/challenge';
 
+import Root from './routes/root';
+import SignIn from './routes/login';
 import OverviewSection from './routes/challenge_sections/overview';
 import InstructionsSection from './routes/challenge_sections/instructions';
 import ExplanatioSection from './routes/challenge_sections/instructor-solution';
 import CommentsSection from './routes/challenge_sections/comments';
+
 const router = createBrowserRouter([
     {
       path: '/',
@@ -48,8 +56,18 @@ const router = createBrowserRouter([
         },
         {
           path: '/users/:id/create-challenge',
-          element: <CreateChallenge />,
-          action:  createAction,
+          children: [
+            {
+              index: true,
+              element: <CreateChallenge />,
+              action:  createAction,
+            },
+            {
+              path: '/users/:id/create-challenge/:challengeId',
+              element: <CreateChallenge />,
+              loader:  createLoader,
+            },
+          ],
         },
         {
           path: '/challenges/:id',
@@ -89,8 +107,3 @@ root.render(
       <RouterProvider router={router} />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals();

@@ -62,11 +62,25 @@ export default function Challenge() {
                   <Typography variant="h5">
                     ¡Manos a la obra!
                   </Typography>
-                  <Box sx= {{ paddingTop: '0.8em', paddingBottom: '0.7em' }}>
-                    <Button variant="contained" fullWidth>
-                      Iniciar Entrega
-                    </Button>
-                  </Box>
+                  {challenge.allowAnswers 
+                    ? <>
+                      <Box sx= {{ paddingTop: '0.8em', paddingBottom: '0.7em' }}>
+                        <Button variant="contained" fullWidth>
+                          Realizar Entrega
+                        </Button>
+                      </Box>
+                      </>
+                    : 
+                      <Typography variant="body1">
+                        <Box sx= {{ paddingLeft: '0.4em', marginTop:'1.5em' }}>
+                          Este reto es de solo lectura, no requieres completar
+                          nada para acceder a la explicación del instructor.
+                          <br/><br/>
+                          Ten en cuenta que vas a aprender más si haces el experimento
+                          antes de acceder a la explicación. 
+                        </Box>
+                      </Typography>
+                  }
                   {challenge.allowAnswers &&
                     <>
                       <Divider  variant="middle" />

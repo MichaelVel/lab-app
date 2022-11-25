@@ -1,14 +1,52 @@
-import MainLayout from "../main/main";
-import {Grid, Box, Button, Divider, ButtonGroup, Typography, Paper, } from "@mui/material";
+import {
+  LoaderFunctionArgs,
+  Outlet,
+  useLoaderData
+} from "react-router";
+
+import {
+  Grid,
+  Box,
+  Button,
+  Divider,
+  Typography,
+  Paper,
+} from "@mui/material";
+import {Stack} from "@mui/system";
 
 import Section from "../main/section";
-import {Outlet} from "react-router";
-import {Stack} from "@mui/system";
+import MainLayout from "../main/main";
 import {ChallengeNavBar} from "../main/inner-navbar";
 import StateChip from "../main/chips/state";
 import VisibilityChip from "../main/chips/visibility";
 
+
+export async function loader({params}: LoaderFunctionArgs) {
+  const response = await fetch(`/api/challenges/${params.id}`, {
+    method: "GET",
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+  });
+
+  const body = await response.json();
+  console.log(body);
+  
+  if (response.status !== 200) { 
+    alert(body.message);
+    return;
+  }
+
+  return body;
+}
+
+export async function action() {
+  // unimplemented
+}
+
 export default function Challenge() {
+  const challenge: any = useLoaderData();
   return (
     <MainLayout 
       sideBar={
@@ -29,21 +67,23 @@ export default function Challenge() {
                       Iniciar Entrega
                     </Button>
                   </Box>
-                  <Divider  variant="middle" />
-                  <Box sx= {{ paddingTop: '0.7em' }}>
-                    <Typography variant="subtitle1">
-                      <Box sx= {{ fontWeight: 'bold' }}>
-                        Instrucciones de publicación: 
-                      </Box>
-                    </Typography>
-                    <Typography variant="body1">
-                      <Box sx= {{ paddingLeft: '0.4em', paddingTop:'0.4em' }}>
-                          En esta sección el estudiante podrá ver las
-                          indicaciones que el instructor asigno para la
-                          entrega.
-                      </Box>
-                    </Typography>
-                  </Box>  
+                  {challenge.allowAnswers &&
+                    <>
+                      <Divider  variant="middle" />
+                      <Box sx= {{ paddingTop: '0.7em' }}>
+                        <Typography variant="subtitle1">
+                          <Box sx= {{ fontWeight: 'bold' }}>
+                            Instrucciones de publicación: 
+                          </Box>
+                        </Typography>
+                        <Typography variant="body1">
+                          <Box sx= {{ paddingLeft: '0.4em', paddingTop:'0.4em' }}>
+                            {challenge.instructions.submition}
+                          </Box>
+                        </Typography>
+                      </Box>  
+                    </>
+                  }
                 </Box>
               </Paper>
             </Grid>
@@ -55,16 +95,17 @@ export default function Challenge() {
           container
           justifyContent="center"
           spacing={1}
+          sx={{ marginTop: '2em' }}
         >
           <Grid item xs={10}>
             <Section 
               elements={
               <>
                 <Typography variant="h2">
-                  Titulo del Reto
+                  {challenge.name}
                 </Typography>
                 <Stack direction="row" spacing={1} >
-                  <VisibilityChip visible />
+                  <VisibilityChip visible={challenge.isPublic}/>
                   <StateChip solved /> 
                 </Stack>
                 <Box sx={{
@@ -72,7 +113,7 @@ export default function Challenge() {
                   marginTop: '1em',
                   backgroundColor: 'azure',
                   }}>
-                  <ChallengeNavBar id="1234" />
+                  <ChallengeNavBar id={`${challenge._id}`} />
                 </Box>
               </>
               }

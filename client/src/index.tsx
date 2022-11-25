@@ -17,7 +17,10 @@ import SearchChallenge, {
   loader as searchLoader,
 } from './routes/search';
 import CreateChallenge, { action as createAction } from './routes/create-challenge';
-import Challenge from './routes/challenge';
+import Challenge, {
+  action as challengeAction,
+  loader as challengeLoader,
+} from './routes/challenge';
 
 import OverviewSection from './routes/challenge_sections/overview';
 import InstructionsSection from './routes/challenge_sections/instructions';
@@ -51,6 +54,9 @@ const router = createBrowserRouter([
         {
           path: '/challenges/:id',
           element: <Challenge />,
+          loader: challengeLoader,
+          action: challengeAction,
+          id: 'challenge',
           children: [
             {
               index: true,

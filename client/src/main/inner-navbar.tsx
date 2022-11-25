@@ -37,31 +37,37 @@ export default function InnerNavBar({links}: Props) {
   );
 }
 
-export function ChallengeNavBar({id}: {id:string}) {
+export function ChallengeNavBar({id, solved}: {id:string, solved?: boolean}) {
+  const [inactive, active, blocked] = [
+    'inactive' as State,
+    'active' as State,
+    'blocked' as State,
+  ];
+
   const items = [
     { 
       icon: <HomeWorkOutlinedIcon />, 
       name: 'Resumen',
       href: `/challenges/${id}`,
-      state: 'active' as State,
+      state: inactive,
     },
     { 
       icon: <AssignmentOutlinedIcon />, 
       name: 'Instrucciones',
       href: `/challenges/${id}/instructions`,
-      state: 'inactive' as State,
+      state: inactive,
     },
     { 
       icon: <LanOutlinedIcon />, 
       name: 'Explicación',
       href: `/challenges/${id}/instructor-solution`,
-      state: 'blocked' as State,
+      state: solved ? inactive : blocked,
     },
     { 
       icon: <ModeCommentOutlinedIcon />, 
       name: 'Comentarios',
       href: `/challenges/${id}/comments`,
-      state: 'blocked' as State,
+      state: solved ? inactive : blocked,
     },
   ]
   

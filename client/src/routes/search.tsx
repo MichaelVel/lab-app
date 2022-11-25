@@ -1,6 +1,6 @@
 import {useRef} from "react";
 import {useLoaderData} from "react-router";
-import {Link} from "react-router-dom";
+import {Link, LinkProps} from "react-router-dom";
 
 import {
   Grid,
@@ -38,29 +38,11 @@ export async function loader() {
 }
 
 export async function action() {
-  const response = await fetch(`/api/challenges`, {
-    method: "PUT",
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-  });
-
-  const body = await response.json();
-
-  if (response.status !== 200) { 
-    alert(body.message);
-    return;
-  }
+  // unimplemented
 }
 
 export default function SearchChallenge() {
   const data: any = useLoaderData(); 
-  const linkRef = useRef<HTMLAnchorElement>(null);
-
-  const handleClick = () => {
-    linkRef.current?.click()
-  };
 
   return (
     <MainLayout 
@@ -108,12 +90,9 @@ export default function SearchChallenge() {
               {data.map((x:any, i:number) => {
                 return (
                   <ListItem key={i}>
-                    <ListItemButton onClick={handleClick}>
-                      <ListItemIcon>
-                        <FolderIcon />
-                      </ListItemIcon>
-                      <Link ref={linkRef} to={`/challenges/${x._id}`}>{x.name}</Link>
-                    </ListItemButton>
+                    <LinkItemButton to={`/challenges/${x._id}`}>
+                      {x.name}
+                    </LinkItemButton>
                   </ListItem>
                 );
               })
@@ -127,3 +106,21 @@ export default function SearchChallenge() {
     />
   );
 }
+
+function LinkItemButton(props: LinkProps) {
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
+  const handleClick = () => {
+    linkRef.current?.click()
+  };
+  
+  return (
+    <ListItemButton onClick={handleClick}>
+      <ListItemIcon>
+        <FolderIcon />
+      </ListItemIcon>
+      <Link {...props} ref={linkRef}>{props.children}</Link>
+    </ListItemButton>
+  );
+}
+

@@ -81,11 +81,11 @@ export const challengeReadOne = (req: Request, res: Response) => {
     }); 
 };
 
-export const challengeUpdateOne = (req: Request, res: Response) => {
+export async function challengeUpdateOne(req: Request, res: Response) {
   const { challengeid } = req.params;
 
   if (req.auth.role !== 'instructor') {
-    res
+    return res
       .status(403)
       .json({ "message": "Only for instructors"});
   }
@@ -99,23 +99,25 @@ export const challengeUpdateOne = (req: Request, res: Response) => {
   }
 
   Challenge
-    .findById(req.params.challengeid)
+    .findById(challengeid)
     .exec((err: any, challenge: any) => {
       if (err) {
-        res
+        return res
           .status(400)
           .json(err);
       } else if (!challenge) {
-        res
+        return res
           .status(404)
           .json({"message": "Challenge not found"});
-      } else if (challenge.user !== req.auth._id) {
-        res
+      } else if (challenge.user.toString() !== req.auth._id) {
+        return res
           .status(403)
           .json({"message": "User id does not match"});
       }
-
-      challenge = {...challenge, ...req.body};
+      
+      for (const property in req.body) {
+        challenge[property] = req.body[property]
+      }
       challenge.save((err: any, challenge: any) => {
         if (err) {
           res

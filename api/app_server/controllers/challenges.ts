@@ -46,7 +46,7 @@ export const challengeCreate = (req: Request, res: Response) => {
       .status(201)
       .json({"success": true});
   }
-
+  
   Challenge.create({...req.body, user: req.auth._id }, (err: any, challenge: any) => {
     if (err) {
       res
@@ -83,7 +83,7 @@ export const challengeReadOne = (req: Request, res: Response) => {
 
 export async function challengeUpdateOne(req: Request, res: Response) {
   const { challengeid } = req.params;
-
+  
   if (req.auth.role !== 'instructor') {
     return res
       .status(403)

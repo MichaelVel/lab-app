@@ -13,7 +13,7 @@ const instructionSchema = new Schema({
 });
 
 const explanationSchema = new Schema({
-    resource: Schema.Types.Buffer
+    resource: String
 });
 
 const challengeSchema = new Schema({

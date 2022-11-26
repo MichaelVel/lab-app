@@ -345,7 +345,8 @@ export default function CreateChallenge() {
                     <UploadButtons 
                       name="resource"
                       subcollectionname='explanation'
-                      value={null}
+                      value={challenge.explanation
+                        ? challenge.explanation.resource : null}
                       callback={updateForm}
                     />
                   </Grid>

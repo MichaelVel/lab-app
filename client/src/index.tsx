@@ -7,20 +7,28 @@ import {
 } from 'react-router-dom';
 
 import './index.css';
-//import reportWebVitals from './reportWebVitals';
+
+import SignUp, {
+  action as registerAction 
+} from './routes/register';
+
+import SearchChallenge, {
+  action as searchAction,
+  loader as searchLoader,
+} from './routes/search';
+
+import CreateChallenge, {
+  action as createAction,
+  loader as createLoader,
+} from './routes/create-challenge';
+
+import Challenge, {
+  action as challengeAction,
+  loader as challengeLoader,
+} from './routes/challenge';
 
 import Root from './routes/root';
 import SignIn from './routes/login';
-import SignUp from './routes/register';
-import {action as LogOutAction} from './routes/logout';
-import SearchChallenge from './routes/search';
-import {User, UserContext} from './context/user';
-import CreateChallenge from './routes/create-challenge';
-import Challenge from './routes/challenge';
-
-import VisibilityChip from './main/chips/visibility';
-import StateChip from './main/chips/state';
-import MenuChip from './main/chips/menu';
 import OverviewSection from './routes/challenge_sections/overview';
 import InstructionsSection from './routes/challenge_sections/instructions';
 import ExplanatioSection from './routes/challenge_sections/instructor-solution';
@@ -34,26 +42,39 @@ const router = createBrowserRouter([
         {
           path: '/users/register',
           element: <SignUp />,
+          action: registerAction,
         },
         {
           path: '/users/login',
           element: <SignIn />,
         },
         {
-          path: '/users/logout',
-          loader: LogOutAction,
-        },
-        {
           path: '/challenges/search',
           element: <SearchChallenge />,
+          action: searchAction,
+          loader: searchLoader,
         },
         {
           path: '/users/:id/create-challenge',
-          element: <CreateChallenge />,
+          children: [
+            {
+              index: true,
+              element: <CreateChallenge />,
+              action:  createAction,
+            },
+            {
+              path: '/users/:id/create-challenge/:challengeId',
+              element: <CreateChallenge />,
+              loader:  createLoader,
+            },
+          ],
         },
         {
           path: '/challenges/:id',
           element: <Challenge />,
+          loader: challengeLoader,
+          action: challengeAction,
+          id: 'challenge',
           children: [
             {
               index: true,
@@ -81,31 +102,8 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// Testing purposes
-const aUser: User = {
-    name: 'anonymous',
-    rol: 'Anonymous',
-}
-
-const user1: User = {
-    name: 'Student',
-    rol: 'Student',
-}
-
-const user2: User = {
-    name: 'Instructor',
-    rol: 'Instructor',
-}
-
 root.render(
   <React.StrictMode>
-    <UserContext.Provider value={user2}>
-        <RouterProvider router={router} />
-    </UserContext.Provider>
+      <RouterProvider router={router} />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals();

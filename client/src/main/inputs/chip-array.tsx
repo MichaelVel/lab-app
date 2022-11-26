@@ -14,15 +14,23 @@ interface ChipData {
   label: string;
 }
 
+interface Props {
+  value: string[];
+  subcollectionname: string;
+  callback: Function;
+}
+
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
 
-export default function InputChipsArray() {
-  const [chipData, setChipData] = React.useState<ChipData[]>([
-    { key: 0, label: 'Nuevo Tema' },
-  ]);
+export default function InputChipsArray({value, callback, subcollectionname}: Props) {
+  const [chipData, setChipData] = React.useState<ChipData[]>(
+      value.length === 0
+      ? [{ key: 0, label: 'Nuevo Tema' }]
+      : value.map( (x:string, i:number) => { return { key: i, label: x}})
+    );
 
   const handleDelete = (chipToDelete: ChipData) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
@@ -33,6 +41,15 @@ export default function InputChipsArray() {
     let newData = [...chipData, newChip];
     setChipData(newData);
   };
+
+  const handleChange = (key: number, value: string) => {
+    let newData =  chipData.map( x => x.key === key ? { key: key, label: value } : x);
+    setChipData(newData);
+  }
+
+  React.useEffect(() => {
+    callback("labels", chipData.map(x => x.label),subcollectionname)
+  }, [chipData]);
 
   return (
     <Paper
@@ -48,12 +65,16 @@ export default function InputChipsArray() {
     >
       {chipData.map((data) => {
         let icon;
-
         return (
           <ListItem key={data.key}>
             <Chip
               icon={icon}
-              label={<VariableSizeInput name="topics" value={data.label} />}
+              label={<VariableSizeInput 
+                name="labels" 
+                value={data.label}
+                dataKey={data.key}
+                callback={handleChange}
+              />}
               onDelete={handleDelete(data)}
             />
           </ListItem>

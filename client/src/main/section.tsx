@@ -23,7 +23,7 @@ export default function Section({name,description,elements}: SectionProps) {
                 </Stack>
            </Grid> 
            <Grid item xs={12}>
-                <Box px={{padding: '1em 0.4em 0.5em'}}>
+                <Box px={{padding: '1em 0.3em 0.5em 0.8em'}}>
                     {elements}
                 </Box>
            </Grid>

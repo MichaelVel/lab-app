@@ -15,6 +15,7 @@ const userSchema = new Schema({
     },
     name: { 
       type: String,
+      unique: true,
       required: true,
     },
     role: {
@@ -23,7 +24,7 @@ const userSchema = new Schema({
     },
     hash: String,
     salt: String,
-});
+}, {strict: true});
 
 userSchema.methods.setPassword = function (password: string) {
     this.salt = randomBytes(16).toString('hex');
@@ -44,6 +45,7 @@ userSchema.methods.generateJwt = function () {
         _id: this._id,
         email: this.email,
         name: this.name,
+        role: this.role,
         exp: Math.trunc(expiry.getTime() / 1000),
     }, secret );
 };

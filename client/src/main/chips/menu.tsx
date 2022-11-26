@@ -1,6 +1,7 @@
-import { Avatar, Chip } from '@mui/material';
+import { Avatar, Chip, ChipProps } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {ReactElement} from 'react';
+import {ReactElement, useState} from 'react';
+import {Link} from 'react-router-dom';
 import {Box, Stack} from '@mui/system';
 
 type State = "blocked" | "active" | "inactive";
@@ -13,43 +14,30 @@ interface Props {
 }
 
 export default function MenuChip({state, icon, label, href}: Props) {
-  if (!state || state === "inactive") {
-   return <Chip 
-      icon= {icon} 
-      label={label} 
-      variant="filled"
-      component="a"
-      href={href}
-      clickable
-      sx={{ 
-        backgroundColor: "rgba(0,0,0,0)" 
-      }}
-    />;
+  let chipProps: any = {
+    icon: icon,
+    label: <Link to={href}>{label}</Link>,
+    variant: 'filled',
+    clickable: true,
+    sx: { backgroundColor: 'rgba(0,0,0,0)' },
+  };
+  
+  if (!state || state === 'inactive') {
+
+  } else if (state === 'active') {
+    chipProps = {
+      ...chipProps, 
+      sx: { backgroundColor: 'blueviolet' },
+    };
+  } else if (state === 'blocked') {
+    chipProps = {
+      ...chipProps,
+      label: label,
+      deleteIcon: <LockOutlinedIcon fontSize="small"/>,
+      onDelete: ()=> {},
+    };
   }
 
-  if (state === "active") {
-    return <Chip 
-      icon={icon}
-      label={label}
-      variant="filled" 
-      component="a"
-      href={href}
-      clickable
-      sx={{ 
-        backgroundColor: "blueviolet" 
-      }}
-    />;
-  }
+  return <Chip  {...chipProps as ChipProps}/>;
 
-  return <Chip 
-        icon= {icon} 
-        label={label} 
-        variant="filled"
-        deleteIcon={<LockOutlinedIcon fontSize="small"/>}
-        clickable
-        onDelete={()=> {}}
-        sx={{ 
-          backgroundColor: "rgba(0,0,0,0)" 
-        }}
-      />;
 }

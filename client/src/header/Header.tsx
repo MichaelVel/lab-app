@@ -1,7 +1,5 @@
-import {Grid} from '@mui/material';
-import {ReactElement, useContext} from 'react';
-import {UserContext} from '../context/user';
-import './Header.css';
+import {Grid, Box} from '@mui/material';
+import {useAuth} from '../context/auth';
 
 import NavBar from './navbar';
 import {
@@ -9,27 +7,29 @@ import {
     UserLoginSection,
 } from './user';
 
-export default function Header(): ReactElement {
-    const user = useContext(UserContext);
+export default function Header() {
+    const {user} = useAuth();
 
     return (
-        <header>
-            <Grid container alignItems={'center'} spacing={3}>
-                <Grid item xs={3}> 
-                    <h1>LabChallenge</h1>
-                </Grid>
-                <Grid item xs={4}> 
-                    <NavBar />
-                </Grid>
-                <Grid item xs={5}>
-                    {
-                        user.rol === 'Anonymous' 
-                            ? <UserLoginSection />
-                            : <AccountMenu />
-                    }
-                </Grid>
+      <header>
+        <Box
+          sx={{
+            backgroundColor: 'rgba(var(--dark-shades), 0.94)'
+          }}
+        >
+          <Grid container alignItems={'center'} spacing={3}>
+            <Grid item xs={3}> 
+              <h1>LabChallenge</h1>
             </Grid>
-        </header>
+            <Grid item xs={4}> 
+              <NavBar />
+            </Grid>
+            <Grid item xs={5}>
+              {!user ? <UserLoginSection /> : <AccountMenu /> }
+            </Grid>
+          </Grid>
+        </Box>
+      </header>
     );
     }
 

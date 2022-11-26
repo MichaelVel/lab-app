@@ -1,19 +1,19 @@
 import {InferSchemaType, Schema, model } from 'mongoose';
 
 const contextSchema = new Schema({
-    mainTopic: { type: String, required: true },
+    mainTopic: String,
     labels: [String],
-    description: { type: String, required: true }
+    description: String
 });
 
 const instructionSchema = new Schema({
-    steps: { type: [String], required: true },
-    materials: { type: [String], required:true },
-    submition: { type: String }
+    steps: [String],
+    materials: [String],
+    submition: String 
 });
 
 const explanationSchema = new Schema({
-    resource: Schema.Types.Buffer
+    resource: String
 });
 
 const challengeSchema = new Schema({

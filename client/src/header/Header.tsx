@@ -1,5 +1,6 @@
 import {Grid, Box} from '@mui/material';
 import {useAuth} from '../context/auth';
+import logo from './ligthLogo.png';
 
 import NavBar from './navbar';
 import {
@@ -17,9 +18,14 @@ export default function Header() {
             backgroundColor: 'rgba(var(--dark-shades), 0.94)'
           }}
         >
-          <Grid container alignItems={'center'} spacing={3}>
+          <Grid container alignItems={'center'} spacing={3} 
+            sx={{
+              paddingTop: '1em',
+              paddingLeft: '1em',
+              paddingBottom: '0.5em',
+            }}>
             <Grid item xs={3}> 
-              <h1>LabChallenge</h1>
+              <img src={logo} alt="Lab Challenge Logo" />
             </Grid>
             <Grid item xs={4}> 
               <NavBar />

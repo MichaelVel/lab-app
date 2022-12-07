@@ -27,6 +27,7 @@ import Challenge, {
   loader as challengeLoader,
 } from './routes/challenge';
 
+import ErrorPage from './main/errors';
 import Root from './routes/root';
 import SignIn from './routes/login';
 import OverviewSection from './routes/challenge_sections/overview';
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
     {
       path: '/',
       element: <Root />,
+      errorElement: <ErrorPage />,
       children: [
         {
           path: '/users/register',
@@ -68,6 +70,10 @@ const router = createBrowserRouter([
               loader:  createLoader,
             },
           ],
+        },
+        {
+          path: '/users/:id/challenges',
+          element: <ErrorPage message="Page Not Implemented yet."/>,
         },
         {
           path: '/challenges/:id',
